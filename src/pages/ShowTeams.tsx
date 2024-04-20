@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -23,6 +23,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import DropdownComponent from "@/components/custom/DropdownComponent";
 
@@ -51,12 +58,14 @@ interface teamType {
   members: member[];
   domains: pair[];
   priorityGuides: pair[];
-  status: boolean;
+  assignedReviewers: pair[];
+  status?: boolean;
 }
 function ShowTeams() {
   const [teams, setTeams] = useState<teamType[]>([]);
   const [guides, setGuides] = useState([]);
   const [selectedReviewer, setSelectedReviewer] = useState<Option[]>([]);
+  const [update, setUpdate] = useState(0);
 
   useEffect(() => {
     const headers = {
@@ -67,8 +76,6 @@ function ShowTeams() {
     axios
       .get("/api/v1/get/allteachers")
       .then((res) => {
-        console.log(res);
-
         const allGuides = res.data.map(
           (teacher: {
             _id: string;
@@ -122,7 +129,9 @@ function ShowTeams() {
                 priorityGuides: [
                   { firstname: string; lastname: string; _id: string }
                 ];
-                assignedReviewer: [{ name: string; _id: string }];
+                assignedReviewers: [
+                  { firstname: string; lastname: string; _id: string }
+                ];
               }) => {
                 return {
                   id: team._id,
@@ -149,7 +158,16 @@ function ShowTeams() {
                       name: guide.firstname + " " + guide.lastname,
                     };
                   }),
-                  status: team.assignedReviewer?.length > 0 ? true : false,
+                  status: team.assignedReviewers?.length > 0 ? true : false,
+                  assignedReviewers:
+                    team.assignedReviewers?.length > 0
+                      ? team.assignedReviewers?.map((guide) => {
+                          return {
+                            id: guide._id,
+                            name: guide.firstname + " " + guide.lastname,
+                          };
+                        })
+                      : [],
                 };
               }
             );
@@ -162,9 +180,33 @@ function ShowTeams() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [update]);
 
-  console.log(teams);
+  const approve = (e: MouseEvent) => {
+    e.preventDefault();
+  };
+
+  const reject = (e: MouseEvent, id: string) => {
+    e.preventDefault();
+
+    const headers = {
+      "Content-Type": "application/json",
+      auth_token: localStorage.getItem("auth_token"),
+    };
+
+    axios
+      .post("/api/v1/team/rejectteam", { teamid: id }, { headers })
+      .then((response) => {
+        console.log(response);
+        
+        if (response.status === 200) {
+          setUpdate(update + 1);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <>
@@ -236,8 +278,7 @@ function ShowTeams() {
                                   key={guide.id}
                                   className="flex items-center space-x-2"
                                 >
-                                  <RadioGroupItem value={guide.id} id="r1" />
-                                  <Label htmlFor="r1">{guide.name}</Label>
+                                  <div>{guide.name}</div>
                                 </div>
                               );
                             })}
@@ -245,35 +286,26 @@ function ShowTeams() {
                         }
                       </TableCell>
                       <TableCell>
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button size={"sm"} className="text-sm">
-                              Assign reviewer
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="sm:max-w-[425px]">
-                            <DialogHeader>
-                              <DialogTitle>Select reviewer</DialogTitle>
-                              <DialogDescription>
-                                Select the reviewers to be assigned
-                              </DialogDescription>
-                            </DialogHeader>
-                            <div className="grid gap-4 py-4">
-                              <div className="space-y-1">
-                                <DropdownComponent
-                                  placeholder="Select reviewers"
-                                  isMultiSelect={true}
-                                  isEditable={true}
-                                  dropdownOptions={guides}
-                                  handleChange={setSelectedReviewer}
-                                />
+                        {
+                          <RadioGroup>
+                            {team.assignedReviewers?.length > 0 ? (
+                              team.assignedReviewers.map((guide: pair) => {
+                                return (
+                                  <div
+                                    key={guide.id}
+                                    className="flex items-center space-x-2"
+                                  >
+                                    <div>{guide.name}</div>
+                                  </div>
+                                );
+                              })
+                            ) : (
+                              <div className="text-center">
+                                No reviewers assigned yet
                               </div>
-                            </div>
-                            <DialogFooter>
-                              <Button size="sm">Assign reviewer</Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
+                            )}
+                          </RadioGroup>
+                        }
                       </TableCell>
                       <TableCell
                         className={`${
@@ -284,13 +316,67 @@ function ShowTeams() {
                       >
                         {team.status == true ? "Approved" : "Pending"}
                       </TableCell>
-                      <TableCell className="font-medium flex flex-col items-center justify-center gap-2">
-                        <Button size="sm" className="bg-green-500">
-                          Approve
-                        </Button>
-                        <Button size="sm" className="bg-red-500">
-                          Reject
-                        </Button>
+                      <TableCell>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button size={"sm"} className="text-sm">
+                              Take Action
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                              <DialogTitle>
+                                Take a action on the team
+                              </DialogTitle>
+                              <DialogDescription>
+                                Approve or reject team
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4">
+                              <div className="space-y-1">
+                                <Label>Assign guide</Label>
+                                <Select>
+                                  <SelectTrigger id="role">
+                                    <SelectValue placeholder="Select a guide" />
+                                  </SelectTrigger>
+                                  <SelectContent position="popper">
+                                    {team.priorityGuides.map((guide: pair) => (
+                                      <SelectItem
+                                        key={guide.id}
+                                        value={guide.id}
+                                      >
+                                        {guide.name}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+
+                              <div className="space-y-1">
+                                <Label>Assign reviewers</Label>
+                                <DropdownComponent
+                                  placeholder="Select reviewers"
+                                  isMultiSelect={true}
+                                  isEditable={true}
+                                  dropdownOptions={guides}
+                                  handleChange={setSelectedReviewer}
+                                />
+                              </div>
+                            </div>
+                            <DialogFooter>
+                              <Button size="sm" className="bg-green-500">
+                                Approve
+                              </Button>
+                              <Button
+                                size="sm"
+                                className="bg-red-500"
+                                onClick={(e) => reject(e, team.id)}
+                              >
+                                Reject
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
                       </TableCell>
                     </TableRow>
                   );

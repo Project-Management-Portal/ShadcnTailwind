@@ -24,16 +24,13 @@ import { Loader2 } from "lucide-react";
 import { MouseEvent, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-
 const providesOptions: { id: number; value: string; label: string }[] = [
   { id: 1, value: "Students", label: "Student" },
-  { id: 2, value: "Admin", label: "Admin" },
-  { id: 3, value: "HOD", label: "HOD" },
-  { id: 4, value: "Teachers", label: "Teacher" },
+  { id: 2, value: "HOD", label: "HOD" },
+  { id: 3, value: "Teachers", label: "Teacher" },
 ];
 
 function Register() {
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -43,12 +40,6 @@ function Register() {
 
   const handleSubmit = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
-
-    if (!username) {
-      Notify("error", "Please enter a username");
-      return;
-      // toast.error("Please enter a username");
-    }
 
     if (!email) {
       Notify("error", "Please enter an email");
@@ -76,7 +67,6 @@ function Register() {
     }
 
     const data = {
-      name: username,
       email: email,
       password: password,
       role: role,
@@ -95,7 +85,11 @@ function Register() {
           localStorage.setItem("auth_token", response.data.auth_token);
           localStorage.setItem("user", JSON.stringify(response.data.user));
           Notify("success", "Registration Successful");
-          navigate("/allnotices");
+          if (response.data.user.role === "Students") {
+            navigate("/createstudentprofile");
+          } else {
+            navigate("/createteacherprofile");
+          }
         }
         if (response.status === 400) {
           Notify("error", "Registration Failed");
@@ -126,14 +120,6 @@ function Register() {
               <CardContent>
                 <form>
                   <div className="grid w-full items-center gap-4">
-                    <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor="username">Username</Label>
-                      <Input
-                        id="username"
-                        placeholder="Your username"
-                        onChange={(e) => setUsername(e.target.value)}
-                      />
-                    </div>
                     <div className="flex flex-col space-y-1.5">
                       <Label htmlFor="email">Email</Label>
                       <Input

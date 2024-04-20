@@ -9,7 +9,7 @@ import SidebarTab from "./SidebarTab";
 
 interface User {
   _id: string;
-  name: string;
+  isProfileCreated: boolean;
   email: string;
   role: string;
   password: string;

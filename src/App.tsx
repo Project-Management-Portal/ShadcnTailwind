@@ -7,6 +7,10 @@ import AllNotices from "./pages/AllNotices";
 import CreateTeam from "./pages/CreateTeam";
 import CreateNotice from "./pages/CreateNotice";
 import ShowTeams from "./pages/ShowTeams";
+import PrivateRoutes from "./routes/PrivateRoutes";
+import PageNotFound from "./pages/PageNotFound";
+import StudentProfile from "./pages/StudentProfile";
+import TeacherProfile from "./pages/TeacherProfile";
 
 function App() {
   return (
@@ -15,12 +19,21 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route element={<DashboardLayout />}>
+        <Route path="/createstudentprofile" element={<StudentProfile />} />
+        <Route path="/createteacherprofile" element={<TeacherProfile />} />
+        <Route
+          element={
+            <PrivateRoutes>
+              <DashboardLayout />
+            </PrivateRoutes>
+          }
+        >
           <Route path="/allnotices" element={<AllNotices />} />
           <Route path="/createteam" element={<CreateTeam />} />
           <Route path="/createnotice" element={<CreateNotice />} />
           <Route path="/showteams" element={<ShowTeams />} />
         </Route>
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>
   );

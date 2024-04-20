@@ -49,8 +49,15 @@ function Login() {
           localStorage.setItem("user", JSON.stringify(response.data.user));
 
           Notify("success", "Login Successful");
-          navigate("/allnotices");
-
+          if (response.data.user.isProfileCreated) {
+            navigate("/allnotices");
+          } else {
+            if (response.data.user.role === "Students") {
+              navigate("/createstudentprofile");
+            } else {
+              navigate("/createteacherprofile");
+            }
+          }
           console.log(response.data.user.role);
         }
 

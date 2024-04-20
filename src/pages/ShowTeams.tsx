@@ -100,8 +100,8 @@ function ShowTeams() {
                   leader: team.leader.name,
                   members: team.members?.map((member) => {
                     return {
-                      value: member._id,
-                      label: member.name,
+                      id: member._id,
+                      name: member.name,
                     };
                   }),
                   domains: team.domains?.map((domain) => {
@@ -130,6 +130,9 @@ function ShowTeams() {
         console.log(err);
       });
   }, []);
+
+  console.log(teams);
+  
 
   return (
     <>

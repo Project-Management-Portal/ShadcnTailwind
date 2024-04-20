@@ -95,6 +95,12 @@ function CreateTeam() {
     isJoinedTeam = JSON.parse(t);
   }
 
+  const s = localStorage.getItem("submittedTeam");
+  let isSubmittedTeam: boolean | null = null;
+  if (s) {
+    isSubmittedTeam = JSON.parse(s);
+  }
+
   const d = localStorage.getItem("user");
   let user: User | null = null;
   if (d) {
@@ -668,7 +674,7 @@ function CreateTeam() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex gap-8">
-                  {teamDetails && teamDetails?.leader.id === user?._id && (
+                  {!isSubmittedTeam && teamDetails?.leader.id === user?._id && (
                     <>
                       <Button
                         disabled={buttonLoad}

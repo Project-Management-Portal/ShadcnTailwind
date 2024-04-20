@@ -56,7 +56,7 @@ function Sidebar() {
 
   return (
     <>
-      <div className="w-[300px] bg-white h-screen flex flex-col items-center  px-2 py-4 border-r-gray-400 border-2 z-50">
+      <div className="relative bg-white h-screen flex flex-col items-center  px-2 py-4 border-r-gray-400 border-2 z-50">
         <NavLink
           to={"/"}
           className="text-3xl font-bold tracking-widest text-blue-700"

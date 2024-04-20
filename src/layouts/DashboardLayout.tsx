@@ -5,10 +5,10 @@ function DashboardLayout() {
   return (
     <>
       <div className="flex relative">
-        <div className="fixed left-0 top-0">
+        <div className="w-[350px] transition-all">
           <Sidebar />
         </div>
-        <div className="w-full ml-[300px]">
+        <div className="w-full">
           <div className="container mx-auto bg-white p-4">
             <Outlet />
           </div>

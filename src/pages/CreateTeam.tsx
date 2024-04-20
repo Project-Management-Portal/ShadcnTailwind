@@ -95,6 +95,8 @@ function CreateTeam() {
     user = JSON.parse(d);
   }
 
+  console.log(guides);
+
   useEffect(() => {
     const headers = {
       "Content-Type": "application/json",
@@ -121,10 +123,20 @@ function CreateTeam() {
       .get("/api/v1/get/allteachers")
       .then((res) => {
         const allGuides = res.data.map(
-          (teacher: { _id: string; name: string }) => {
+          (teacher: {
+            user: string;
+            firstname: string;
+            lastname: string;
+            salutation: string;
+          }) => {
             return {
-              value: teacher._id,
-              label: teacher.name,
+              value: teacher.user,
+              label:
+                teacher.salutation +
+                " " +
+                teacher.firstname +
+                " " +
+                teacher.lastname,
             };
           }
         );
@@ -410,7 +422,7 @@ function CreateTeam() {
       .catch((err) => {
         console.log(err);
         Notify("error", err.response.data.message);
-      })
+      });
   };
 
   const onClose = () => {

@@ -36,12 +36,19 @@ type pair = {
   name: string;
 };
 
+type member = {
+  id: string;
+  name: string;
+  class: string;
+  rollno: string;
+};
+
 interface teamType {
   id: string;
   teamid: string;
   teamname: string;
   leader: string;
-  members: pair[];
+  members: member[];
   domains: pair[];
   priorityGuides: pair[];
   status: boolean;
@@ -60,11 +67,23 @@ function ShowTeams() {
     axios
       .get("/api/v1/get/allteachers")
       .then((res) => {
+        console.log(res);
+
         const allGuides = res.data.map(
-          (teacher: { _id: string; name: string }) => {
+          (teacher: {
+            _id: string;
+            firstname: string;
+            lastname: string;
+            salutation: string;
+          }) => {
             return {
               value: teacher._id,
-              label: teacher.name,
+              label:
+                teacher.salutation +
+                " " +
+                teacher.firstname +
+                " " +
+                teacher.lastname,
             };
           }
         );
@@ -81,27 +100,41 @@ function ShowTeams() {
         // console.log(response);
         if (response.status === 201) {
           if (response.data.team?.length > 0) {
-            // console.log(response.data.team);
+            console.log(response.data.team);
             const allTeams = response.data.team.map(
               (team: {
                 _id: string;
                 teamid: string;
                 teamName: string;
-                leader: { name: string };
-                members: [{ name: string; _id: string }];
+                leader: { firstname: string; lastname: string; _id: string };
+                members: [
+                  {
+                    firstname: string;
+                    lastname: string;
+                    _id: string;
+                    details: {
+                      class: string;
+                      rollno: string;
+                    };
+                  }
+                ];
                 domains: [{ name: string; _id: string }];
-                priorityGuides: [{ name: string; _id: string }];
+                priorityGuides: [
+                  { firstname: string; lastname: string; _id: string }
+                ];
                 assignedReviewer: [{ name: string; _id: string }];
               }) => {
                 return {
                   id: team._id,
                   teamid: team.teamid,
                   teamname: team.teamName,
-                  leader: team.leader.name,
+                  leader: team.leader.firstname + " " + team.leader.lastname,
                   members: team.members?.map((member) => {
                     return {
                       id: member._id,
-                      name: member.name,
+                      name: member.firstname + " " + member.lastname,
+                      class: member.details.class,
+                      rollno: member.details.rollno,
                     };
                   }),
                   domains: team.domains?.map((domain) => {
@@ -113,7 +146,7 @@ function ShowTeams() {
                   priorityGuides: team.priorityGuides?.map((guide) => {
                     return {
                       id: guide._id,
-                      name: guide.name,
+                      name: guide.firstname + " " + guide.lastname,
                     };
                   }),
                   status: team.assignedReviewer?.length > 0 ? true : false,
@@ -132,7 +165,6 @@ function ShowTeams() {
   }, []);
 
   console.log(teams);
-  
 
   return (
     <>
@@ -168,12 +200,13 @@ function ShowTeams() {
                       <TableCell>{team.leader}</TableCell>
                       <TableCell>
                         <RadioGroup>
-                          {team.members?.map((member: pair) => {
+                          {team.members?.map((member: member) => {
                             return (
                               <div
                                 key={member.id}
                                 className="flex items-center space-x-2"
                               >
+                                <div>{member.rollno}</div>
                                 <div>{member.name}</div>
                               </div>
                             );
@@ -214,7 +247,9 @@ function ShowTeams() {
                       <TableCell>
                         <Dialog>
                           <DialogTrigger asChild>
-                            <Button>Assign reviewer</Button>
+                            <Button size={"sm"} className="text-sm">
+                              Assign reviewer
+                            </Button>
                           </DialogTrigger>
                           <DialogContent className="sm:max-w-[425px]">
                             <DialogHeader>

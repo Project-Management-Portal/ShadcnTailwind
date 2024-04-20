@@ -336,19 +336,24 @@ function CreateTeam() {
     axios
       .post("/api/v1/team/getjoinrequests", { teamid: data }, { headers })
       .then((response) => {
-        // console.log(response.data.requests);
+        console.log(response.data.requests);
         if (response.status === 201) {
           const data = response.data.requests.map(
             (request: {
               _id: string;
               teamid: string;
-              userid: { _id: string; name: string; email: string };
+              userid: {
+                _id: string;
+                firstname: string;
+                lastname: string;
+                email: string;
+              };
             }) => {
               const req = {
                 id: request._id,
                 userid: request.userid._id,
                 teamid: request.teamid,
-                name: request.userid.name,
+                name: request.userid.firstname + " " + request.userid.lastname,
                 email: request.userid.email,
               };
               return req;
@@ -392,8 +397,11 @@ function CreateTeam() {
       auth_token: localStorage.getItem("auth_token"),
     };
 
+    const data = { teamid: teamid, userid: userid };
+    console.log(data);
+
     axios
-      .post("/api/v1/team/rejectjoinrequest", { teamid, userid }, { headers })
+      .post("/api/v1/team/approvejoinrequest", data, { headers })
       .then((response) => {
         console.log(response);
         if (response.status === 201) {
@@ -416,7 +424,7 @@ function CreateTeam() {
       auth_token: localStorage.getItem("auth_token"),
     };
     axios
-      .post("/api/v1/team/approvejoinrequest", { teamid, userid }, { headers })
+      .post("/api/v1/team/rejectjoinrequest", { teamid, userid }, { headers })
       .then((response) => {
         console.log(response);
         if (response.status === 201) {
@@ -672,7 +680,9 @@ function CreateTeam() {
                         )}
                         Delete Team
                       </Button>
-                      <Button className="bg-green-500">Submit Team</Button>
+                      <Button className="bg-green-500" onClick={submit}>
+                        Submit Team
+                      </Button>
                       <Button onClick={getJoinRequests} variant="outline">
                         Show join requests
                       </Button>

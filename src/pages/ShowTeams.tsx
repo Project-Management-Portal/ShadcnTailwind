@@ -60,7 +60,7 @@ interface teamType {
   domains: pair[];
   priorityGuides: pair[];
   assignedReviewers: pair[];
-  assignedGuide: pair;
+  assignedGuide: pair[];
   status?: boolean;
 }
 function ShowTeams() {
@@ -130,16 +130,29 @@ function ShowTeams() {
                 ];
                 domains: [{ name: string; _id: string }];
                 priorityGuides: [
-                  { firstname: string; lastname: string; _id: string }
+                  {
+                    firstname: string;
+                    lastname: string;
+                    salutation: string;
+                    _id: string;
+                  }
                 ];
                 assignedReviewer: [
-                  { firstname: string; lastname: string; _id: string }
+                  {
+                    firstname: string;
+                    lastname: string;
+                    salutation: string;
+                    _id: string;
+                  }
                 ];
-                assignedGuide: {
-                  firstname: string;
-                  lastname: string;
-                  _id: string;
-                };
+                assignedGuide: [
+                  {
+                    firstname: string;
+                    lastname: string;
+                    salutation: string;
+                    _id: string;
+                  }
+                ];
               }) => {
                 return {
                   id: team._id,
@@ -163,7 +176,12 @@ function ShowTeams() {
                   priorityGuides: team.priorityGuides?.map((guide) => {
                     return {
                       id: guide._id,
-                      name: guide.firstname + " " + guide.lastname,
+                      name:
+                        guide.salutation +
+                        " " +
+                        guide.firstname +
+                        " " +
+                        guide.lastname,
                     };
                   }),
                   status: team.assignedReviewer?.length > 0 ? true : false,
@@ -172,17 +190,29 @@ function ShowTeams() {
                       ? team.assignedReviewer?.map((guide) => {
                           return {
                             id: guide._id,
-                            name: guide.firstname + " " + guide.lastname,
+                            name:
+                              guide.salutation +
+                              " " +
+                              guide.firstname +
+                              " " +
+                              guide.lastname,
                           };
                         })
                       : [],
-                  assignedGuide: {
-                    id: team.assignedGuide._id,
-                    name:
-                      team.assignedGuide.firstname +
-                      " " +
-                      team.assignedGuide.lastname,
-                  },
+                  assignedGuide:
+                    team.assignedGuide?.length > 0
+                      ? team.assignedGuide?.map((guide) => {
+                          return {
+                            id: guide._id,
+                            name:
+                              guide.salutation +
+                              " " +
+                              guide.firstname +
+                              " " +
+                              guide.lastname,
+                          };
+                        })
+                      : [],
                 };
               }
             );
@@ -331,7 +361,7 @@ function ShowTeams() {
                       <TableCell>
                         {
                           <RadioGroup>
-                            {!team.assignedGuide ? (
+                            {team.assignedGuide?.length == 0 ? (
                               team.priorityGuides?.map((guide: pair) => {
                                 return (
                                   <div
@@ -343,11 +373,8 @@ function ShowTeams() {
                                 );
                               })
                             ) : (
-                              <div
-                                
-                                className="flex items-center space-x-2"
-                              >
-                                <div>{team.assignedGuide.name}</div>
+                              <div className="flex items-center space-x-2">
+                                <div>{team.assignedGuide[0].name}</div>
                               </div>
                             )}
                           </RadioGroup>

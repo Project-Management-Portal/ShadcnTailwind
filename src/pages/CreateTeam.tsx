@@ -95,8 +95,6 @@ function CreateTeam() {
     user = JSON.parse(d);
   }
 
-  console.log(guides);
-
   useEffect(() => {
     const headers = {
       "Content-Type": "application/json",
@@ -122,15 +120,17 @@ function CreateTeam() {
     axios
       .get("/api/v1/get/allteachers")
       .then((res) => {
+        console.log(res);
+
         const allGuides = res.data.map(
           (teacher: {
-            user: string;
+            _id: string;
             firstname: string;
             lastname: string;
             salutation: string;
           }) => {
             return {
-              value: teacher.user,
+              value: teacher._id,
               label:
                 teacher.salutation +
                 " " +
@@ -170,22 +170,39 @@ function CreateTeam() {
 
             const teamid = response.data.team[0].teamid;
 
-            const leader = response.data.team[0].leader?.name;
+            const leader =
+              response.data.team[0].leader?.firstname +
+              " " +
+              response.data.team[0].leader?.lastname;
 
             const members = response.data.team[0].members.map(
-              (member: { _id: string; name: string }) => {
+              (member: {
+                _id: string;
+                firstname: string;
+                lastname: string;
+              }) => {
                 return {
                   value: member._id,
-                  label: member.name,
+                  label: member.firstname + " " + member.lastname,
                 };
               }
             );
 
             const priorityGuides = response.data.team[0].priorityGuides.map(
-              (guide: { _id: string; name: string }) => {
+              (guide: {
+                _id: string;
+                firstname: string;
+                lastname: string;
+                salutation: string;
+              }) => {
                 return {
                   value: guide._id,
-                  label: guide.name,
+                  label:
+                    guide.salutation +
+                    " " +
+                    guide.firstname +
+                    " " +
+                    guide.lastname,
                 };
               }
             );
@@ -260,6 +277,8 @@ function CreateTeam() {
     axios
       .post("/api/v1/team/createteam", form_data, { headers })
       .then((res) => {
+        console.log(res.data);
+
         if (res.status === 201) {
           Notify("success", "Team created");
           setButtonLoad(false);

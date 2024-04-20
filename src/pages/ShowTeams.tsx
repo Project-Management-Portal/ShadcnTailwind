@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/select";
 
 import DropdownComponent from "@/components/custom/DropdownComponent";
+import Notify from "@/helpers/Notify";
 
 interface Option {
   value: string;
@@ -59,12 +60,14 @@ interface teamType {
   domains: pair[];
   priorityGuides: pair[];
   assignedReviewers: pair[];
+  assignedGuide: pair;
   status?: boolean;
 }
 function ShowTeams() {
   const [teams, setTeams] = useState<teamType[]>([]);
   const [guides, setGuides] = useState([]);
   const [selectedReviewer, setSelectedReviewer] = useState<Option[]>([]);
+  const [selectedGuide, setSelectedGuide] = useState<string>("");
   const [update, setUpdate] = useState(0);
 
   useEffect(() => {
@@ -129,9 +132,14 @@ function ShowTeams() {
                 priorityGuides: [
                   { firstname: string; lastname: string; _id: string }
                 ];
-                assignedReviewers: [
+                assignedReviewer: [
                   { firstname: string; lastname: string; _id: string }
                 ];
+                assignedGuide: {
+                  firstname: string;
+                  lastname: string;
+                  _id: string;
+                };
               }) => {
                 return {
                   id: team._id,
@@ -158,16 +166,23 @@ function ShowTeams() {
                       name: guide.firstname + " " + guide.lastname,
                     };
                   }),
-                  status: team.assignedReviewers?.length > 0 ? true : false,
+                  status: team.assignedReviewer?.length > 0 ? true : false,
                   assignedReviewers:
-                    team.assignedReviewers?.length > 0
-                      ? team.assignedReviewers?.map((guide) => {
+                    team.assignedReviewer?.length > 0
+                      ? team.assignedReviewer?.map((guide) => {
                           return {
                             id: guide._id,
                             name: guide.firstname + " " + guide.lastname,
                           };
                         })
                       : [],
+                  assignedGuide: {
+                    id: team.assignedGuide._id,
+                    name:
+                      team.assignedGuide.firstname +
+                      " " +
+                      team.assignedGuide.lastname,
+                  },
                 };
               }
             );
@@ -180,10 +195,52 @@ function ShowTeams() {
       .catch((err) => {
         console.log(err);
       });
-  }, [update]);
+  }, [update, setUpdate]);
 
-  const approve = (e: MouseEvent) => {
+  const approve = (
+    e: MouseEvent,
+    id: string,
+    guide: string,
+    reviewers: Option[]
+  ) => {
     e.preventDefault();
+    const headers = {
+      "Content-Type": "application/json",
+      auth_token: localStorage.getItem("auth_token"),
+    };
+
+    if (!selectedGuide) {
+      Notify("error", "Please select a guide");
+      return;
+    }
+
+    if (!selectedReviewer) {
+      Notify("error", "Please select a reviewer");
+      return;
+    }
+    const data = {
+      teamid: id,
+      guide: guide,
+      reviewers: reviewers.map((guide: { value: string }) => guide.value),
+    };
+
+    console.log(data);
+    axios
+      .post("/api/v1/team/approveteam", data, { headers })
+      .then((response) => {
+        console.log(response);
+
+        if (response.status === 200) {
+          setUpdate((prev) => prev + 1);
+          Notify("success", "Team accepted");
+          setSelectedGuide("");
+          setSelectedReviewer([]);
+          window.location.reload();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const reject = (e: MouseEvent, id: string) => {
@@ -198,9 +255,11 @@ function ShowTeams() {
       .post("/api/v1/team/rejectteam", { teamid: id }, { headers })
       .then((response) => {
         console.log(response);
-        
+
         if (response.status === 200) {
-          setUpdate(update + 1);
+          setUpdate((prev) => prev + 1);
+          Notify("success", "Team rejected");
+          window.location.reload();
         }
       })
       .catch((err) => {
@@ -272,16 +331,25 @@ function ShowTeams() {
                       <TableCell>
                         {
                           <RadioGroup>
-                            {team.priorityGuides?.map((guide: pair) => {
-                              return (
-                                <div
-                                  key={guide.id}
-                                  className="flex items-center space-x-2"
-                                >
-                                  <div>{guide.name}</div>
-                                </div>
-                              );
-                            })}
+                            {!team.assignedGuide ? (
+                              team.priorityGuides?.map((guide: pair) => {
+                                return (
+                                  <div
+                                    key={guide.id}
+                                    className="flex items-center space-x-2"
+                                  >
+                                    <div>{guide.name}</div>
+                                  </div>
+                                );
+                              })
+                            ) : (
+                              <div
+                                
+                                className="flex items-center space-x-2"
+                              >
+                                <div>{team.assignedGuide.name}</div>
+                              </div>
+                            )}
                           </RadioGroup>
                         }
                       </TableCell>
@@ -335,7 +403,9 @@ function ShowTeams() {
                             <div className="grid gap-4 py-4">
                               <div className="space-y-1">
                                 <Label>Assign guide</Label>
-                                <Select>
+                                <Select
+                                  onValueChange={(val) => setSelectedGuide(val)}
+                                >
                                   <SelectTrigger id="role">
                                     <SelectValue placeholder="Select a guide" />
                                   </SelectTrigger>
@@ -364,7 +434,18 @@ function ShowTeams() {
                               </div>
                             </div>
                             <DialogFooter>
-                              <Button size="sm" className="bg-green-500">
+                              <Button
+                                size="sm"
+                                className="bg-green-500"
+                                onClick={(e) =>
+                                  approve(
+                                    e,
+                                    team.id,
+                                    selectedGuide,
+                                    selectedReviewer
+                                  )
+                                }
+                              >
                                 Approve
                               </Button>
                               <Button

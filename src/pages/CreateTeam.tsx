@@ -41,7 +41,10 @@ interface resTeam {
   id: string;
   teamName: string;
   teamid: string;
-  leader: string;
+  leader: {
+    id: string;
+    name: string;
+  };
   domains: Option[];
   members: Option[];
   priorityGuides: Option[];
@@ -72,7 +75,10 @@ function CreateTeam() {
     id: "",
     teamName: "",
     teamid: "",
-    leader: "",
+    leader: {
+      name: "",
+      id: "",
+    },
     domains: [],
     members: [],
     priorityGuides: [],
@@ -170,10 +176,13 @@ function CreateTeam() {
 
             const teamid = response.data.team[0].teamid;
 
-            const leader =
-              response.data.team[0].leader?.firstname +
-              " " +
-              response.data.team[0].leader?.lastname;
+            const leader = {
+              name:
+                response.data.team[0].leader?.firstname +
+                " " +
+                response.data.team[0].leader?.lastname,
+              id: response.data.team[0].leader?.user,
+            };
 
             const members = response.data.team[0].members.map(
               (member: {
@@ -562,7 +571,7 @@ function CreateTeam() {
                     <Label htmlFor="leader">Team Leader</Label>
                     {teamDetails && (
                       <div className="w-full p-2 bg-white rounded-sm">
-                        {teamDetails?.leader}
+                        {teamDetails?.leader.name}
                       </div>
                     )}
                   </div>
@@ -651,7 +660,7 @@ function CreateTeam() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex gap-8">
-                  {teamDetails && teamDetails?.leader === user?.name && (
+                  {teamDetails && teamDetails?.leader.id === user?._id && (
                     <>
                       <Button
                         disabled={buttonLoad}

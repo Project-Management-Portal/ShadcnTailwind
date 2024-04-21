@@ -3,6 +3,7 @@ import {
   Loader2,
   Power,
   Presentation,
+  User,
   Users,
   UsersRoundIcon,
 } from "lucide-react";
@@ -119,6 +120,14 @@ function Sidebar() {
               link="/project"
               icon={<Presentation className="h-5 w-5" />}
               value="My Project"
+            />
+          )}
+
+          {user?.role === "Students" && (
+            <SidebarTab
+              link="/studentprofile"
+              icon={<User className="h-5 w-5" />}
+              value="Profile"
             />
           )}
 

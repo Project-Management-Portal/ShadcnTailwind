@@ -101,7 +101,6 @@ function ShowTeams() {
   const [selectedGuide, setSelectedGuide] = useState<string>("");
   const [update, setUpdate] = useState(0);
   const [table, setTable] = useState<tableData[]>([]);
-  
 
   useEffect(() => {
     const headers = {
@@ -435,14 +434,9 @@ function ShowTeams() {
                         <Table>
                           {team.members?.map((member: member) => {
                             return (
-                              <>
-                                <TableRow
-                                  key={member.id}
-                                  // className="flex flex-col items-center space-x-2"
-                                >
-                                  {member.rollno}
-                                </TableRow>
-                              </>
+                              <TableRow key={member.id}>
+                                <TableCell>{member.rollno}</TableCell>
+                              </TableRow>
                             );
                           })}
                         </Table>
@@ -451,14 +445,9 @@ function ShowTeams() {
                         <Table>
                           {team.members?.map((member: member) => {
                             return (
-                              <>
-                                <TableRow
-                                  key={member.id}
-                                  // className="flex flex-col items-center space-x-2"
-                                >
-                                  {member.name}
-                                </TableRow>
-                              </>
+                              <TableRow key={member.id}>
+                                <TableCell>{member.name}</TableCell>
+                              </TableRow>
                             );
                           })}
                         </Table>

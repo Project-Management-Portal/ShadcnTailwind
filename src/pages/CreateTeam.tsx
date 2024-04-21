@@ -534,7 +534,7 @@ function CreateTeam() {
 
   return (
     <>
-      <div>
+      <div className="w-full">
         <h1 className="text-2xl capitalize font-semibold">My Team</h1>
         <Separator className="my-4 bg-black" />
         <div>
@@ -617,7 +617,7 @@ function CreateTeam() {
           )}
 
           {isJoinedTeam && (
-            <div>
+            <div className="">
               <Card className="bg-blue-100">
                 <CardHeader>
                   <CardTitle>Team Details</CardTitle>

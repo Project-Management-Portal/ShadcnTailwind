@@ -92,7 +92,7 @@ function Sidebar() {
 
   return (
     <>
-      <div className="relative bg-white h-screen flex flex-col items-center  px-2 py-4 border-r-gray-400 border-2 z-50">
+      <div className="w-[250px] bg-white h-screen flex flex-col items-center  px-2 py-4 border-r-gray-400 border-2 z-50">
         <NavLink
           to={"/"}
           className="text-3xl font-bold tracking-widest text-blue-700"
@@ -119,6 +119,14 @@ function Sidebar() {
               link="/project"
               icon={<Presentation className="h-5 w-5" />}
               value="My Project"
+            />
+          )}
+
+          {user?.role === "Teachers" && (
+            <SidebarTab
+              link="/guideprojects"
+              icon={<Users className="h-5 w-5" />}
+              value="Show Projects"
             />
           )}
 

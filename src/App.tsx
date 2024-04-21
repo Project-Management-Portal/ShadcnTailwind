@@ -12,6 +12,8 @@ import PageNotFound from "./pages/PageNotFound";
 import StudentProfile from "./pages/StudentProfile";
 import TeacherProfile from "./pages/TeacherProfile";
 import Project from "./pages/Project";
+import ShowGuideTeams from "./pages/ShowGuideProjects";
+import ProjectDetails from "./pages/ProjectDetails";
 
 function App() {
   return (
@@ -33,7 +35,9 @@ function App() {
           <Route path="/createteam" element={<CreateTeam />} />
           <Route path="/createnotice" element={<CreateNotice />} />
           <Route path="/showteams" element={<ShowTeams />} />
+          <Route path="/guideprojects" element={<ShowGuideTeams />} />
           <Route path="/project" element={<Project />} />
+          <Route path="/projectdetails/:id" element={<ProjectDetails />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { RadioGroup } from "@/components/ui/radio-group";
+
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,6 +33,9 @@ import {
 
 import DropdownComponent from "@/components/custom/DropdownComponent";
 import Notify from "@/helpers/Notify";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import { CSVLink } from "react-csv";
 
 interface Option {
   value: string;
@@ -63,12 +66,41 @@ interface teamType {
   assignedGuide: pair[];
   status?: boolean;
 }
+
+interface tableData {
+  srno: number;
+  teamid: string;
+  teamname: string;
+  leader: string;
+  rollno: string[];
+  members: string[];
+  domains: string[];
+  priorityGuides: string[];
+  assignedReviewers: string[];
+  assignedGuide: string[];
+  status?: boolean;
+}
+
+const tableHeader = [
+  { label: "Sr no.", key: "srno" },
+  { label: "Team ID", key: "teamid" },
+  { label: "Team Name", key: "teamname" },
+  { label: "Leader", key: "leader" },
+  { label: "Roll No.", key: "rollno" },
+  { label: "Members", key: "members" },
+  { label: "Domains", key: "domains" },
+  { label: "Priority Guides", key: "priorityGuides" },
+  { label: "Assigned Reviewers", key: "assignedReviewers" },
+  { label: "Assigned Guide", key: "assignedGuide" },
+  { label: "Status", key: "status" },
+];
 function ShowTeams() {
   const [teams, setTeams] = useState<teamType[]>([]);
   const [guides, setGuides] = useState([]);
   const [selectedReviewer, setSelectedReviewer] = useState<Option[]>([]);
   const [selectedGuide, setSelectedGuide] = useState<string>("");
   const [update, setUpdate] = useState(0);
+  const [table, setTable] = useState<tableData[]>([]);
 
   useEffect(() => {
     const headers = {
@@ -219,6 +251,42 @@ function ShowTeams() {
 
             // console.log(allTeams);
             setTeams(allTeams);
+
+            const tabledata = allTeams.map((team: teamType, index: number) => {
+              return {
+                srno: index + 1,
+                teamid: team.teamid,
+                teamname: team.teamname,
+                leader: team.leader,
+                rollno: team.members.map((member) => {
+                  return member.rollno;
+                }),
+                members: team.members.map((member) => {
+                  return member.name;
+                }),
+                domains: team.domains.map((domain) => {
+                  return domain.name;
+                }),
+                priorityGuides: team.priorityGuides.map((guide) => {
+                  return guide.name;
+                }),
+                assignedReviewers:
+                  team.assignedReviewers.length > 0
+                    ? team.assignedReviewers.map((guide) => {
+                        return guide.name;
+                      })
+                    : [],
+                assignedGuide:
+                  team.assignedGuide.length > 0
+                    ? team.assignedGuide.map((guide) => {
+                        return guide.name;
+                      })
+                    : [],
+                status: team.status,
+              };
+            });
+
+            setTable(tabledata);
           }
         }
       })
@@ -297,18 +365,50 @@ function ShowTeams() {
       });
   };
 
+  const downloadPDF = async () => {
+    const doc = new jsPDF({ orientation: "landscape" });
+    autoTable(doc, { html: "#mytable" });
+    // const tHead = [
+    //   "Sr. no.",
+    //   "Team ID",
+    //   "Team Name",
+    //   "Team Leader",
+    //   "Roll no.",
+    //   "Members",
+    //   "Domains",
+    //   "Priority Guides",
+    //   "Assigned Reviewers",
+    //   "Assigned Guide",
+    //   "Status",
+    // ];
+    // autoTable(doc, { head: [tHead], body: [table] });
+    doc.save("table.pdf");
+  };
+
   return (
     <>
       <div>
         <h1 className="text-2xl capitalize font-semibold">All Teams</h1>
         <Separator className="my-4 bg-black" />
-        <Table>
+        <div className="flex gap-4 items-center my-8 justify-end">
+          <Button>
+            <CSVLink data={table} headers={tableHeader}>
+              Download CSV
+            </CSVLink>
+          </Button>
+          <Button className="bg-green-500" onClick={downloadPDF}>
+            Download PDF
+          </Button>
+        </div>
+        <Table id="mytable">
           <TableCaption>List of teams formed</TableCaption>
           <TableHeader>
             <TableRow>
+              <TableHead className="uppercase">Sr. no.</TableHead>
               <TableHead className="uppercase">Teamid</TableHead>
               <TableHead className="uppercase">Team name</TableHead>
               <TableHead className="uppercase">Leader</TableHead>
+              <TableHead className="uppercase">Roll no.</TableHead>
               <TableHead className="uppercase">Members</TableHead>
               <TableHead className="uppercase">Domains</TableHead>
               <TableHead className="uppercase">Guides</TableHead>
@@ -319,9 +419,10 @@ function ShowTeams() {
           </TableHeader>
           <TableBody>
             {teams?.length > 0
-              ? teams?.map((team: teamType) => {
+              ? teams?.map((team: teamType, index: number) => {
                   return (
                     <TableRow key={team.id}>
+                      <TableCell className="font-medium">{index + 1}</TableCell>
                       <TableCell className="font-medium">
                         {team.teamid}
                       </TableCell>
@@ -330,77 +431,83 @@ function ShowTeams() {
                       </TableCell>
                       <TableCell>{team.leader}</TableCell>
                       <TableCell>
-                        <RadioGroup>
+                        <Table>
                           {team.members?.map((member: member) => {
                             return (
-                              <div
-                                key={member.id}
-                                className="flex items-center space-x-2"
-                              >
-                                <div>{member.rollno}</div>
-                                <div>{member.name}</div>
-                              </div>
+                              <>
+                                <TableRow
+                                  key={member.id}
+                                  // className="flex flex-col items-center space-x-2"
+                                >
+                                  {member.rollno}
+                                </TableRow>
+                              </>
                             );
                           })}
-                        </RadioGroup>
+                        </Table>
                       </TableCell>
                       <TableCell>
-                        <RadioGroup>
+                        <Table>
+                          {team.members?.map((member: member) => {
+                            return (
+                              <>
+                                <TableRow
+                                  key={member.id}
+                                  // className="flex flex-col items-center space-x-2"
+                                >
+                                  {member.name}
+                                </TableRow>
+                              </>
+                            );
+                          })}
+                        </Table>
+                      </TableCell>
+                      <TableCell>
+                        <Table>
                           {team.domains?.map((domain: pair) => {
                             return (
-                              <div
-                                key={domain.id}
-                                className="flex items-center space-x-2"
-                              >
-                                <div>{domain.name}</div>
-                              </div>
+                              <TableRow key={domain.id}>
+                                <TableCell>{domain.name}</TableCell>
+                              </TableRow>
                             );
                           })}
-                        </RadioGroup>
+                        </Table>
                       </TableCell>
                       <TableCell>
-                        {
-                          <RadioGroup>
-                            {team.assignedGuide?.length == 0 ? (
-                              team.priorityGuides?.map((guide: pair) => {
-                                return (
-                                  <div
-                                    key={guide.id}
-                                    className="flex items-center space-x-2"
-                                  >
-                                    <div>{guide.name}</div>
-                                  </div>
-                                );
-                              })
-                            ) : (
-                              <div className="flex items-center space-x-2">
-                                <div>{team.assignedGuide[0].name}</div>
-                              </div>
-                            )}
-                          </RadioGroup>
-                        }
+                        <Table>
+                          {team.assignedGuide?.length == 0 ? (
+                            team.priorityGuides?.map((guide: pair) => {
+                              return (
+                                <TableRow key={guide.id}>
+                                  <TableCell>{guide.name}</TableCell>
+                                </TableRow>
+                              );
+                            })
+                          ) : (
+                            <TableRow className="flex items-center space-x-2">
+                              <TableCell>
+                                {team.assignedGuide[0].name}
+                              </TableCell>
+                            </TableRow>
+                          )}
+                        </Table>
                       </TableCell>
                       <TableCell>
-                        {
-                          <RadioGroup>
-                            {team.assignedReviewers?.length > 0 ? (
-                              team.assignedReviewers.map((guide: pair) => {
-                                return (
-                                  <div
-                                    key={guide.id}
-                                    className="flex items-center space-x-2"
-                                  >
-                                    <div>{guide.name}</div>
-                                  </div>
-                                );
-                              })
-                            ) : (
-                              <div className="text-center">
-                                No reviewers assigned yet
-                              </div>
-                            )}
-                          </RadioGroup>
-                        }
+                        <Table>
+                          {team.assignedReviewers?.length > 0 ? (
+                            team.assignedReviewers.map((guide: pair) => {
+                              return (
+                                <TableRow key={guide.id}>
+                                  <TableCell>{guide.name}</TableCell>
+                                </TableRow>
+                              );
+                            })
+                          ) : (
+                            <TableRow className="text-center">
+                              <TableCell>No reviewers assigned yet</TableCell>
+                            </TableRow>
+                          )}
+                        </Table>
                       </TableCell>
                       <TableCell
                         className={`${

@@ -101,6 +101,7 @@ function ShowTeams() {
   const [selectedGuide, setSelectedGuide] = useState<string>("");
   const [update, setUpdate] = useState(0);
   const [table, setTable] = useState<tableData[]>([]);
+  
 
   useEffect(() => {
     const headers = {
@@ -534,54 +535,63 @@ function ShowTeams() {
                                 Approve or reject team
                               </DialogDescription>
                             </DialogHeader>
-                            <div className="grid gap-4 py-4">
-                              <div className="space-y-1">
-                                <Label>Assign guide</Label>
-                                <Select
-                                  onValueChange={(val) => setSelectedGuide(val)}
-                                >
-                                  <SelectTrigger id="role">
-                                    <SelectValue placeholder="Select a guide" />
-                                  </SelectTrigger>
-                                  <SelectContent position="popper">
-                                    {team.priorityGuides.map((guide: pair) => (
-                                      <SelectItem
-                                        key={guide.id}
-                                        value={guide.id}
-                                      >
-                                        {guide.name}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
-                              </div>
+                            {team.status == false && (
+                              <div className="grid gap-4 py-4">
+                                <div className="space-y-1">
+                                  <Label>Assign guide</Label>
+                                  <Select
+                                    onValueChange={(val) =>
+                                      setSelectedGuide(val)
+                                    }
+                                  >
+                                    <SelectTrigger id="role">
+                                      <SelectValue placeholder="Select a guide" />
+                                    </SelectTrigger>
+                                    <SelectContent position="popper">
+                                      {team.priorityGuides.map(
+                                        (guide: pair) => (
+                                          <SelectItem
+                                            key={guide.id}
+                                            value={guide.id}
+                                          >
+                                            {guide.name}
+                                          </SelectItem>
+                                        )
+                                      )}
+                                    </SelectContent>
+                                  </Select>
+                                </div>
 
-                              <div className="space-y-1">
-                                <Label>Assign reviewers</Label>
-                                <DropdownComponent
-                                  placeholder="Select reviewers"
-                                  isMultiSelect={true}
-                                  isEditable={true}
-                                  dropdownOptions={guides}
-                                  handleChange={setSelectedReviewer}
-                                />
+                                <div className="space-y-1">
+                                  <Label>Assign reviewers</Label>
+                                  <DropdownComponent
+                                    placeholder="Select reviewers"
+                                    isMultiSelect={true}
+                                    isEditable={true}
+                                    dropdownOptions={guides}
+                                    handleChange={setSelectedReviewer}
+                                  />
+                                </div>
                               </div>
-                            </div>
+                            )}
                             <DialogFooter>
-                              <Button
-                                size="sm"
-                                className="bg-green-500"
-                                onClick={(e) =>
-                                  approve(
-                                    e,
-                                    team.id,
-                                    selectedGuide,
-                                    selectedReviewer
-                                  )
-                                }
-                              >
-                                Approve
-                              </Button>
+                              {team.status === false && (
+                                <Button
+                                  size="sm"
+                                  className="bg-green-500"
+                                  onClick={(e) =>
+                                    approve(
+                                      e,
+                                      team.id,
+                                      selectedGuide,
+                                      selectedReviewer
+                                    )
+                                  }
+                                >
+                                  Approve
+                                </Button>
+                              )}
+
                               <Button
                                 size="sm"
                                 className="bg-red-500"

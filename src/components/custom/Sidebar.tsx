@@ -1,7 +1,14 @@
-import { Bell, Loader2, Power, Users, UsersRoundIcon } from "lucide-react";
+import {
+  Bell,
+  Loader2,
+  Power,
+  Presentation,
+  Users,
+  UsersRoundIcon,
+} from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import axios from "axios";
 import clearLocalStorage from "@/helpers/ClearLocalStorage";
 import Notify from "@/helpers/Notify";
@@ -23,6 +30,8 @@ function Sidebar() {
   if (d) {
     user = JSON.parse(d);
   }
+
+  const [isApprovedByAdmin, setIsApprovedByAdmin] = useState(false);
 
   const handleSubmit = (e: MouseEvent) => {
     e.preventDefault();
@@ -54,6 +63,33 @@ function Sidebar() {
       });
   };
 
+  useEffect(() => {
+    const headers = {
+      "Content-Type": "application/json",
+      auth_token: localStorage.getItem("auth_token"),
+    };
+    if (user?.role === "Students") {
+      console.log("in sidebar");
+
+      axios
+        .get(
+          "/api/v1/team/getmyteaminfo",
+
+          { headers }
+        )
+        .then((response) => {
+          if (response.data?.team[0].assignedGuide?.length > 0) {
+            setIsApprovedByAdmin(true);
+          } else {
+            setIsApprovedByAdmin(false);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, []);
+
   return (
     <>
       <div className="relative bg-white h-screen flex flex-col items-center  px-2 py-4 border-r-gray-400 border-2 z-50">
@@ -75,6 +111,14 @@ function Sidebar() {
               link="/createteam"
               icon={<Users className="h-5 w-5" />}
               value="Team"
+            />
+          )}
+
+          {user?.role === "Students" && isApprovedByAdmin && (
+            <SidebarTab
+              link="/project"
+              icon={<Presentation className="h-5 w-5" />}
+              value="My Project"
             />
           )}
 

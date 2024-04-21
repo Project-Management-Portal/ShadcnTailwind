@@ -1,5 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+
 import {
   Card,
   CardContent,
@@ -48,6 +50,9 @@ interface resTeam {
   domains: Option[];
   members: Option[];
   priorityGuides: Option[];
+  assignedGuide: Option[];
+  assignedReviewer: Option[];
+  status: boolean;
 }
 
 interface requestType {
@@ -71,6 +76,8 @@ function CreateTeam() {
   const [selectedDomains, setSelectedDomains] = useState<Option[]>([]);
   const [guides, setGuides] = useState([]);
   const [selectedGuides, setSelectedGuides] = useState<Option[]>([]);
+  // const [assignedGuide, setAssignedGuide] = useState<Option[]>([]);
+  // const [assignedReviewer, setAssignedReviewer] = useState<Option[]>([]);
   const [teamDetails, setTeamDetails] = useState<resTeam>({
     id: "",
     teamName: "",
@@ -82,6 +89,9 @@ function CreateTeam() {
     domains: [],
     members: [],
     priorityGuides: [],
+    assignedGuide: [],
+    assignedReviewer: [],
+    status: false,
   });
   const [requests, setRequests] = useState<requestType[]>([]);
   const [buttonLoad, setButtonLoad] = useState(false);
@@ -165,7 +175,7 @@ function CreateTeam() {
         { headers }
       )
       .then((response) => {
-        console.log(response.data.team[0]);
+        // console.log(response.data.team[0]);
         const myteam = response.data.team;
         if (response.status === 201) {
           if (response.data.team?.length > 0) {
@@ -222,6 +232,54 @@ function CreateTeam() {
               }
             );
 
+            const assignedReviewers =
+              response.data.team[0].assignedReviewer?.length > 0
+                ? response.data.team[0].assignedReviewer?.map(
+                    (guide: {
+                      _id: string;
+                      firstname: string;
+                      lastname: string;
+                      salutation: string;
+                    }) => {
+                      return {
+                        value: guide._id,
+                        label:
+                          guide.salutation +
+                          " " +
+                          guide.firstname +
+                          " " +
+                          guide.lastname,
+                      };
+                    }
+                  )
+                : [];
+
+            const assignedGuide =
+              response.data.team[0].assignedGuide?.length > 0
+                ? response.data.team[0].assignedGuide?.map(
+                    (guide: {
+                      _id: string;
+                      firstname: string;
+                      lastname: string;
+                      salutation: string;
+                    }) => {
+                      return {
+                        value: guide._id,
+                        label:
+                          guide.salutation +
+                          " " +
+                          guide.firstname +
+                          " " +
+                          guide.lastname,
+                      };
+                    }
+                  )
+                : [];
+
+            const status =
+              response.data.team[0].assignedReviewer?.length == 0
+                ? false
+                : true;
             setTeamDetails({
               id,
               teamName,
@@ -230,6 +288,9 @@ function CreateTeam() {
               domains: allDomains,
               members,
               priorityGuides,
+              assignedReviewer: assignedReviewers,
+              assignedGuide: assignedGuide,
+              status: status,
             });
           }
 
@@ -645,53 +706,134 @@ function CreateTeam() {
                     </Accordion>
                   </div>
 
-                  <div className="space-y-1">
-                    <Label htmlFor="priorityguides">Guides</Label>
-                    <Accordion
-                      type="single"
-                      collapsible
-                      className={"bg-white rounded-md"}
-                    >
-                      <AccordionItem value="item-1">
-                        <AccordionTrigger className="py-2 px-2">
-                          All Guides
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          <ul className="p-2">
-                            {teamDetails?.priorityGuides.map(
-                              (guide: { value: string; label: string }) => {
-                                return (
-                                  <li key={guide.value} className="mb-1">
-                                    {guide.label}
-                                  </li>
-                                );
-                              }
-                            )}
-                          </ul>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  </div>
+                  {teamDetails?.assignedGuide?.length > 0 ? (
+                    <div className="space-y-1">
+                      <Label htmlFor="priorityguides">Assigned Guide</Label>
+                      <Accordion
+                        type="single"
+                        collapsible
+                        className={"bg-white rounded-md"}
+                      >
+                        <AccordionItem value="item-1">
+                          <AccordionTrigger className="py-2 px-2">
+                            Assigned Guide
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <ul className="p-2">
+                              {teamDetails?.assignedGuide.map(
+                                (guide: { value: string; label: string }) => {
+                                  return (
+                                    <li key={guide.value} className="mb-1">
+                                      {guide.label}
+                                    </li>
+                                  );
+                                }
+                              )}
+                            </ul>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    </div>
+                  ) : (
+                    <div className="space-y-1">
+                      <Label htmlFor="priorityguides">Priority Guides</Label>
+                      <Accordion
+                        type="single"
+                        collapsible
+                        className={"bg-white rounded-md"}
+                      >
+                        <AccordionItem value="item-1">
+                          <AccordionTrigger className="py-2 px-2">
+                            All Guides
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <ul className="p-2">
+                              {teamDetails?.priorityGuides.map(
+                                (guide: { value: string; label: string }) => {
+                                  return (
+                                    <li key={guide.value} className="mb-1">
+                                      {guide.label}
+                                    </li>
+                                  );
+                                }
+                              )}
+                            </ul>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    </div>
+                  )}
+
+                  {teamDetails?.assignedReviewer?.length > 0 && (
+                    <div className="space-y-1">
+                      <Label htmlFor="priorityguides">Assigned reviewers</Label>
+                      <Accordion
+                        type="single"
+                        collapsible
+                        className={"bg-white rounded-md"}
+                      >
+                        <AccordionItem value="item-1">
+                          <AccordionTrigger className="py-2 px-2">
+                            All assigned reviewers
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <ul className="p-2">
+                              {teamDetails?.assignedReviewer.map(
+                                (guide: { value: string; label: string }) => {
+                                  return (
+                                    <li key={guide.value} className="mb-1">
+                                      {guide.label}
+                                    </li>
+                                  );
+                                }
+                              )}
+                            </ul>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    </div>
+                  )}
                 </CardContent>
                 <CardFooter className="flex gap-8">
-                  {!isSubmittedTeam && teamDetails?.leader.id === user?._id && (
+                  {!isSubmittedTeam ? (
+                    teamDetails?.leader.id === user?._id && (
+                      <>
+                        <Button
+                          disabled={buttonLoad}
+                          onClick={deleteTeam}
+                          variant="destructive"
+                        >
+                          {buttonLoad && (
+                            <Loader2 className="mr-2 w-4 h-4 animate-spin" />
+                          )}
+                          Delete Team
+                        </Button>
+                        <Button className="bg-green-500" onClick={submit}>
+                          Submit Team
+                        </Button>
+                        <Button onClick={getJoinRequests} variant="outline">
+                          Show join requests
+                        </Button>
+                      </>
+                    )
+                  ) : (
                     <>
-                      <Button
-                        disabled={buttonLoad}
-                        onClick={deleteTeam}
-                        variant="destructive"
-                      >
-                        {buttonLoad && (
-                          <Loader2 className="mr-2 w-4 h-4 animate-spin" />
-                        )}
-                        Delete Team
-                      </Button>
-                      <Button className="bg-green-500" onClick={submit}>
-                        Submit Team
-                      </Button>
-                      <Button onClick={getJoinRequests} variant="outline">
-                        Show join requests
-                      </Button>
+                      {teamDetails?.status == false ? (
+                        <div>
+                          <Badge variant={"destructive"}>
+                            Team approval pending
+                          </Badge>
+                        </div>
+                      ) : (
+                        <div>
+                          <Badge
+                            variant={"destructive"}
+                            className="bg-green-500"
+                          >
+                            Team approved
+                          </Badge>
+                        </div>
+                      )}
                     </>
                   )}
 

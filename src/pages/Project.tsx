@@ -39,7 +39,6 @@ function Project() {
     title: "",
     description: "",
   });
-  
 
   useEffect(() => {
     const headers = {
@@ -102,6 +101,7 @@ function Project() {
         setButtonLoad(false);
       });
   };
+  console.log(isProjectCreated);
 
   const handleEdit = (e: MouseEvent) => {
     e.preventDefault();

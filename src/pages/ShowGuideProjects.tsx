@@ -171,6 +171,11 @@ function ShowGuideProjects() {
     navigate(`/projectdetails/${id}`);
   };
 
+  const handleAssessProject = (id: string) => {
+    console.log(id);
+    navigate(`/assessproject/${id}`);
+  };
+
   return (
     <div>
       <h1 className="text-2xl capitalize font-semibold">All Projects</h1>
@@ -225,20 +230,22 @@ function ShowGuideProjects() {
             <>
               {reviewerProjects?.map((project: projectType) => {
                 return (
-                  <Card
-                    className="max-w-[300px] bg-blue-200"
-                    key={project.projectid}
-                  >
+                  <Card className="w-full bg-blue-200" key={project.projectid}>
                     <CardHeader>
                       <CardTitle>{project.title}</CardTitle>
                       <CardDescription>{project.description}</CardDescription>
                     </CardHeader>
 
-                    <CardFooter className="flex justify-between">
+                    <CardFooter className="flex gap-6">
                       <Button
                         onClick={() => handleViewProject(project.projectid)}
                       >
                         view project
+                      </Button>
+                      <Button
+                        onClick={() => handleAssessProject(project.projectid)}
+                      >
+                        Assess project
                       </Button>
                     </CardFooter>
                   </Card>

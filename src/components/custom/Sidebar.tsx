@@ -4,6 +4,7 @@ import {
   Power,
   Presentation,
   User,
+  User2,
   Users,
   UsersRoundIcon,
 } from "lucide-react";
@@ -126,7 +127,7 @@ function Sidebar() {
           {user?.role === "Students" && (
             <SidebarTab
               link="/studentprofile"
-              icon={<User className="h-5 w-5" />}
+              icon={<User2 className="h-5 w-5" />}
               value="Profile"
             />
           )}
@@ -136,6 +137,14 @@ function Sidebar() {
               link="/guideprojects"
               icon={<Users className="h-5 w-5" />}
               value="Show Projects"
+            />
+          )}
+
+          {user?.role === "Teachers" && (
+            <SidebarTab
+              link="/teacherprofile"
+              icon={<User2 className="h-5 w-5" />}
+              value="Profile"
             />
           )}
 

@@ -2,7 +2,9 @@ import Navbar from "@/components/custom/Navbar";
 import collabImage from "../assets/collab.svg";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/custom/Footer";
+import { useNavigate } from "react-router-dom";
 function Home() {
+  const navigate = useNavigate();
   return (
     <>
       <div>
@@ -17,7 +19,12 @@ function Home() {
               <p className="font-medium tracking-widest text-lg text-center lg:text-start lg:text-xl mt-1 lg:mt-2 mb-8 lg:mb-10">
                 Empower Your Projects with TaskSync
               </p>
-              <Button className="hover:bg-gray-600">Get Started</Button>
+              <Button
+                className="hover:bg-gray-600"
+                onClick={() => navigate("/register")}
+              >
+                Get Started
+              </Button>
             </div>
             <div className="order-1 lg:order-2 flex items-center justify-center">
               <img

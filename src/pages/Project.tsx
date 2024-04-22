@@ -15,15 +15,6 @@ import { MouseEvent, useEffect, useState } from "react";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import Notify from "@/helpers/Notify";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
 interface projectType {
   title: string;
@@ -39,6 +30,7 @@ function Project() {
     title: "",
     description: "",
   });
+  const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
     const headers = {
@@ -56,6 +48,9 @@ function Project() {
             title: response.data?.project[0].title,
             description: response.data?.project[0].description,
           });
+
+          setTitle(response.data?.project[0].title);
+          setDescription(response.data?.project[0].description);
         }
       })
       .catch((err) => console.log(err));
@@ -198,60 +193,42 @@ function Project() {
                   <Label htmlFor="title">Project Title</Label>
                   <Input
                     id="title"
-                    disabled={true}
-                    value={`${projectDetails?.title}`}
+                    disabled={isDisabled}
+                    defaultValue={title}
+                    onChange={(e) => setTitle(e.target.value)}
                   />
                 </div>
                 <div className="space-y-1">
                   <Label htmlFor="description">Project Description</Label>
                   <Textarea
                     id="description"
-                    disabled={true}
-                    value={`${projectDetails?.description}`}
+                    disabled={isDisabled}
+                    defaultValue={description}
+                    onChange={(e) => setDescription(e.target.value)}
                   />
                 </div>
               </CardContent>
               <CardFooter>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button>Edit Project</Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px] bg-blue-200">
-                    <DialogHeader>
-                      <DialogTitle>Edit project</DialogTitle>
-                      <DialogDescription>
-                        Make changes to your project here. Click save when
-                        you're done.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="space-y-1">
-                      <Label htmlFor="title">Project Title</Label>
-                      <Input
-                        id="title"
-                        onChange={(e) => setTitle(e.target.value)}
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <Label htmlFor="description">Project Description</Label>
-                      <Textarea
-                        id="description"
-                        onChange={(e) => setDescription(e.target.value)}
-                      />
-                    </div>
-                    <DialogFooter>
-                      <Button
-                        disabled={buttonLoad}
-                        onClick={handleEdit}
-                        className="bg-green-500"
-                      >
-                        {buttonLoad && (
-                          <Loader2 className="mr-2 w-4 h-4 animate-spin" />
-                        )}
-                        Update Project
+                <div className="flex gap-4">
+                  {isDisabled && (
+                    <Button onClick={() => setIsDisabled(!isDisabled)}>
+                      Edit Project
+                    </Button>
+                  )}
+                  {!isDisabled && (
+                    <>
+                      <Button className="bg-green-500" onClick={handleEdit}>
+                        Update
                       </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
+                      <Button
+                        onClick={() => setIsDisabled(!isDisabled)}
+                        className="bg-red-500"
+                      >
+                        Cancel Update
+                      </Button>
+                    </>
+                  )}
+                </div>
               </CardFooter>
             </Card>
           )}

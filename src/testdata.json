@@ -1,0 +1,144 @@
+{
+  "review": {
+    "_id": "66262b1a15216818b3afc006",
+    "reviewForms": [
+      {
+        "_id": "662624731f81bd3efdcff4d5",
+        "name": "Synopsis",
+        "description": "",
+        "type": "YES_NO",
+        "questions": [
+          {
+            "_id": "66262170aaa2772120f81454",
+            "questionText": "Is the statement short and concise (10-20 words maximum)?",
+            "questionType": "YES_NO"
+          },
+          {
+            "_id": "66262170aaa2772120f81455",
+            "questionText": "Does the statement give a clear indication about what your project will accomplish?",
+            "questionType": "YES_NO"
+          },
+          {
+            "_id": "66262170aaa2772120f81456",
+            "questionText": "Can a person who is not familiar with the project understand the scope of the project by reading the project problem statement?",
+            "questionType": "YES_NO"
+          },
+          {
+            "_id": "66262170aaa2772120f81457",
+            "questionText": "Are all aspects of the requirements document (i.e., Functional Spec.) addressed in the design?",
+            "questionType": "YES_NO"
+          },
+          {
+            "_id": "66262170aaa2772120f81458",
+            "questionText": "Is the architecture / block diagram well defined and understood?",
+            "questionType": "YES_NO"
+          },
+          {
+            "_id": "66262170aaa2772120f81459",
+            "questionText": "The project's objective of study (what product, process, resource etc.) is being addressed?",
+            "questionType": "YES_NO"
+          },
+          {
+            "_id": "66262170aaa2772120f8145a",
+            "questionText": "The project's purpose is the purpose of the project addressed properly (why it's being pursued: to evaluate, reduce, increase, etc.)?",
+            "questionType": "YES_NO"
+          },
+          {
+            "_id": "66262170aaa2772120f8145b",
+            "questionText": "The project's viewpoint: Is the project's viewpoint understood? (Who is the project's end user?)",
+            "questionType": "YES_NO"
+          },
+          {
+            "_id": "66262170aaa2772120f8145c",
+            "questionText": "Is the project goal statement in alignment with the sponsoring organization's business goals and mission?",
+            "questionType": "YES_NO"
+          },
+          {
+            "_id": "66262170aaa2772120f8145d",
+            "questionText": "Is information domain analysis complete, consistent and accurate?",
+            "questionType": "YES_NO"
+          },
+          {
+            "_id": "66262170aaa2772120f8145e",
+            "questionText": "Is the problem statement categorized in the identified area and targeted towards a specific area therein?",
+            "questionType": "YES_NO"
+          },
+          {
+            "_id": "66262170aaa2772120f8145f",
+            "questionText": "Are external and internal interfaces properly defined?",
+            "questionType": "YES_NO"
+          },
+          {
+            "_id": "66262170aaa2772120f81460",
+            "questionText": "Does the Use Case Model properly reflect the actors and their roles and responsibilities?",
+            "questionType": "YES_NO"
+          },
+          {
+            "_id": "66262170aaa2772120f81461",
+            "questionText": "Are all requirements traceable to system level?",
+            "questionType": "YES_NO"
+          },
+          {
+            "_id": "66262170aaa2772120f81462",
+            "questionText": "Is a similar type of methodology/model used for existing work?",
+            "questionType": "YES_NO"
+          },
+          {
+            "_id": "66262170aaa2772120f81463",
+            "questionText": "Are requirements consistent with schedule, resources, and budget?",
+            "questionType": "YES_NO"
+          }
+        ]
+      },
+      {
+        "_id": "662626a713eaa8a2278c22e9",
+        "name": "Student Performance Evaluation",
+        "description": "",
+        "type": "NUMERIC",
+        "questions": [
+          {
+            "_id": "6626266d13eaa8a2278c22e0",
+            "questionText": "Background and Topic (3 M)",
+            "questionType": "NUMERIC"
+          },
+          {
+            "_id": "6626266d13eaa8a2278c22e1",
+            "questionText": "Project Scope and Objectives (3 M)",
+            "questionType": "NUMERIC"
+          },
+          {
+            "_id": "6626266d13eaa8a2278c22e2",
+            "questionText": "Literature Survey (4 M)",
+            "questionType": "NUMERIC"
+          },
+          {
+            "_id": "6626266d13eaa8a2278c22e3",
+            "questionText": "Project Planning (2 M)",
+            "questionType": "NUMERIC"
+          },
+          {
+            "_id": "6626266d13eaa8a2278c22e4",
+            "questionText": "Presentation Skills (3 M)",
+            "questionType": "NUMERIC"
+          },
+          {
+            "_id": "6626266d13eaa8a2278c22e5",
+            "questionText": "Teamwork (2 M)",
+            "questionType": "NUMERIC"
+          },
+          {
+            "_id": "6626266d13eaa8a2278c22e6",
+            "questionText": "Regular interaction with the guide and timely submission (4 M)",
+            "questionType": "NUMERIC"
+          },
+          {
+            "_id": "6626266d13eaa8a2278c22e7",
+            "questionText": "Question and Answer (4 M)",
+            "questionType": "NUMERIC"
+          }
+        ]
+      }
+    ],
+    "__v": 0
+  }
+}

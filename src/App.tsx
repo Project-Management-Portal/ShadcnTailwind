@@ -16,6 +16,7 @@ import ShowGuideTeams from "./pages/ShowGuideProjects";
 import ProjectDetails from "./pages/ProjectDetails";
 import ShowStudentProfile from "./pages/ShowStudentProfile";
 import Assessment from "./pages/Assessment";
+import ShowTeacherProfile from "./pages/ShowTeacherProfile";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="/projectdetails/:id" element={<ProjectDetails />} />
           <Route path="/assessproject/:id" element={<Assessment />} />
           <Route path="/studentprofile" element={<ShowStudentProfile />} />
+          <Route path="/teacherprofile" element={<ShowTeacherProfile />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

@@ -15,6 +15,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import reviewData from "../../testdata.json";
+
 const First = () => {
   //   const columns = [
   //     {
@@ -38,6 +40,8 @@ const First = () => {
   //       width: "30%",
   //     },
   //   ];
+
+  console.log(reviewData);
 
   type ansType = {
     id: number;
@@ -328,7 +332,8 @@ const First = () => {
         },
         {
           srno: 16,
-          statement: "Are requirements consistent with schedule, resources and budget?",
+          statement:
+            "Are requirements consistent with schedule, resources and budget?",
           answer: [
             {
               id: 1,

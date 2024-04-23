@@ -17,6 +17,7 @@ import ProjectDetails from "./pages/ProjectDetails";
 import ShowStudentProfile from "./pages/ShowStudentProfile";
 import Assessment from "./pages/Assessment";
 import ShowTeacherProfile from "./pages/ShowTeacherProfile";
+import FirstReview from "./pages/FirstReview";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
           <Route path="/assessproject/:id" element={<Assessment />} />
           <Route path="/studentprofile" element={<ShowStudentProfile />} />
           <Route path="/teacherprofile" element={<ShowTeacherProfile />} />
+          <Route path="/firstreview/:id" element={<FirstReview />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

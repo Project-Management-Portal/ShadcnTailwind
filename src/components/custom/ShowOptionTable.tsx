@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
 import {
   Table,
   TableBody,
@@ -25,52 +24,15 @@ type questionType = {
   id: string;
   statement: string;
   number: string;
+  answer?: string;
 };
-
-interface resQuestionType {
-  question: string;
-  answer: string;
-}
 
 interface tableProps {
   category: string;
   questions: questionType[];
-  answers: resQuestionType[];
-  setAnswers: Dispatch<SetStateAction<resQuestionType[]>>;
 }
 
-function OptionTable({ category, questions, answers, setAnswers }: tableProps) {
-  const onUpdate = (id: string, answer: string) => {
-    const existingAnswerIndex = answers.findIndex(
-      (item) => item.question === id
-    );
-
-    if (existingAnswerIndex !== -1) {
-      // If an answer with the same id exists, update it
-      const updatedAnswers = answers.map((item, index) => {
-        if (index === existingAnswerIndex) {
-          return {
-            ...item,
-            answer: answer,
-          };
-        } else {
-          return item;
-        }
-      });
-      setAnswers(updatedAnswers);
-    } else {
-      // If no answer with the same id exists, push a new answer
-      const newAnswers = [
-        ...answers,
-        {
-          question: id,
-          answer,
-        },
-      ];
-      setAnswers(newAnswers);
-    }
-  };
-
+function ShowOptionTable({ category, questions }: tableProps) {
   return (
     <div>
       <div>
@@ -91,9 +53,9 @@ function OptionTable({ category, questions, answers, setAnswers }: tableProps) {
                 <TableCell>{question.number}</TableCell>
                 <TableCell>{question.statement}</TableCell>
                 <TableCell>
-                  <Select onValueChange={(val) => onUpdate(question.id, val)}>
+                  <Select disabled={true}>
                     <SelectTrigger className="bg-blue-100">
-                      <SelectValue placeholder="Select answer" />
+                      <SelectValue placeholder={question.answer} />
                     </SelectTrigger>
                     <SelectContent className="bg-blue-500">
                       {answerOptions.map((ans) => (
@@ -113,4 +75,4 @@ function OptionTable({ category, questions, answers, setAnswers }: tableProps) {
   );
 }
 
-export default OptionTable;
+export default ShowOptionTable;

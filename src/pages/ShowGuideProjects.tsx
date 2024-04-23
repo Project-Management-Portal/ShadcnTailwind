@@ -197,11 +197,16 @@ function ShowGuideProjects() {
                       <CardDescription>{project.description}</CardDescription>
                     </CardHeader>
 
-                    <CardFooter className="flex justify-between">
+                    <CardFooter className="flex gap-6">
                       <Button
                         onClick={() => handleViewProject(project.projectid)}
                       >
                         view project
+                      </Button>
+                      <Button
+                        onClick={() => handleAssessProject(project.projectid)}
+                      >
+                        Assess project
                       </Button>
                     </CardFooter>
                   </Card>

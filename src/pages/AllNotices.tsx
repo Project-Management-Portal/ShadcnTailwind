@@ -33,11 +33,11 @@ function AllNotices() {
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get("/api/v1/get/allnotices")
+      .get("/api/v1/notices")
       .then((res) => {
-        // console.log(res.data);
+        console.log(res);
         if (res.status === 200) {
-          setNotices(res.data);
+          setNotices(res.data.notices);
         }
         setIsLoading(false);
       })

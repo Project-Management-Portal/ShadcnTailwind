@@ -42,8 +42,9 @@ function Login() {
 
     setIsLoading(true);
     axios
-      .post("/api/v1/auth/login", data)
+      .post("/api/v1/users/login", data)
       .then((response) => {
+        console.log(response);
         if (response.status === 200) {
           localStorage.setItem("auth_token", response.data.auth_token);
           localStorage.setItem("user", JSON.stringify(response.data.user));
@@ -67,8 +68,8 @@ function Login() {
         setIsLoading(false);
       })
       .catch((error) => {
-        Notify("error", error.response.data.message);
         console.log(error);
+        Notify("error", error.response.data.message);
         setIsLoading(false);
       });
   };

@@ -25,9 +25,9 @@ import { MouseEvent, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const providesOptions: { id: number; value: string; label: string }[] = [
-  { id: 1, value: "Students", label: "Student" },
+  { id: 1, value: "Student", label: "Student" },
   { id: 2, value: "HOD", label: "HOD" },
-  { id: 3, value: "Teachers", label: "Teacher" },
+  { id: 3, value: "Teacher", label: "Teacher" },
 ];
 
 function Register() {

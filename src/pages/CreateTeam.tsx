@@ -123,7 +123,7 @@ function CreateTeam() {
       auth_token: localStorage.getItem("auth_token"),
     };
     axios
-      .get("/api/v1/domain/getAllDomains")
+      .get("/api/v1/domains")
       .then((res) => {
         const allDomains = res.data.map(
           (domain: { _id: string; name: string }) => {

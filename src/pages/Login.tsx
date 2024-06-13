@@ -59,7 +59,6 @@ function Login() {
               navigate("/createteacherprofile");
             }
           }
-          console.log(response.data.user.role);
         }
 
         if (response.status === 400) {
@@ -68,7 +67,7 @@ function Login() {
         setIsLoading(false);
       })
       .catch((error) => {
-        console.log(error);
+        console.log("Error", error);
         Notify("error", error.response.data.message);
         setIsLoading(false);
       });

@@ -85,7 +85,7 @@ function Register() {
           localStorage.setItem("auth_token", response.data.auth_token);
           localStorage.setItem("user", JSON.stringify(response.data.user));
           Notify("success", "Registration Successful");
-          if (response.data.user.role === "Students") {
+          if (response.data.user.role === "Student") {
             navigate("/createstudentprofile");
           } else {
             navigate("/createteacherprofile");

@@ -41,7 +41,7 @@ function Sidebar() {
     setIsLoading(true);
     axios
       .post(
-        "/api/v1/auth/logout",
+        "/api/v1/users/logout",
         {},
         {
           headers: {
@@ -68,14 +68,12 @@ function Sidebar() {
   useEffect(() => {
     const headers = {
       "Content-Type": "application/json",
-      auth_token: localStorage.getItem("auth_token"),
+      auth_token: localStorage.getItem("auth_token") || "",
     };
     if (user?.role === "Students") {
-      console.log("in sidebar");
-
       axios
         .get(
-          "/api/v1/team/getmyteaminfo",
+          "/api/v1/teams/myteam",
 
           { headers }
         )
@@ -108,7 +106,7 @@ function Sidebar() {
             value="Notices"
           />
 
-          {user?.role === "Students" && (
+          {user?.role === "Student" && (
             <SidebarTab
               link="/createteam"
               icon={<Users className="h-5 w-5" />}
@@ -116,7 +114,7 @@ function Sidebar() {
             />
           )}
 
-          {user?.role === "Students" && isApprovedByAdmin && (
+          {user?.role === "Student" && isApprovedByAdmin && (
             <SidebarTab
               link="/project"
               icon={<Presentation className="h-5 w-5" />}
@@ -124,7 +122,7 @@ function Sidebar() {
             />
           )}
 
-          {user?.role === "Students" && (
+          {user?.role === "Student" && (
             <SidebarTab
               link="/studentprofile"
               icon={<User2 className="h-5 w-5" />}
@@ -132,7 +130,7 @@ function Sidebar() {
             />
           )}
 
-          {user?.role === "Teachers" && (
+          {user?.role === "Teacher" && (
             <SidebarTab
               link="/guideprojects"
               icon={<Users className="h-5 w-5" />}
@@ -140,7 +138,7 @@ function Sidebar() {
             />
           )}
 
-          {user?.role === "Teachers" && (
+          {user?.role === "Teacher" && (
             <SidebarTab
               link="/teacherprofile"
               icon={<User2 className="h-5 w-5" />}

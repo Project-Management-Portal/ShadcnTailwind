@@ -72,25 +72,25 @@ function ShowStudentProfile() {
   useEffect(() => {
     const headers = {
       "Content-Type": "application/json",
-      auth_token: localStorage.getItem("auth_token"),
+      auth_token: localStorage.getItem("auth_token") || "",
     };
 
     axios
-      .get("/api/v1/auth/profile", { headers })
+      .get("/api/v1/students", { headers })
       .then((response) => {
         // console.log(response.data.student);
-
+        console.log(response);
         if (response.status === 200) {
           const student = response.data?.student;
           const id = student._id;
           const dept = student.dept;
-          const firstname = student.firstname;
-          const lastname = student.lastname;
-          const email = student?.user?.email;
+          const firstname = student.firstName;
+          const lastname = student.lastName;
+          const email = student?.userId?.email;
           const contact = student.contact;
-          const regid = student.regid;
+          const regid = student.regId;
           const classs = student?.details?.class;
-          const rollno = student?.details?.rollno;
+          const rollno = student?.details?.rollNo;
 
           setUser({
             id,
@@ -164,19 +164,19 @@ function ShowStudentProfile() {
     }
 
     const data = {
-      firstname: firstName,
-      lastname: lastName,
-      regid: regid,
+      firstName: firstName,
+      lastName: lastName,
+      regId: regid,
       contact: contact,
       dept: department,
       details: {
         class: classId,
-        rollno: rollno,
+        rollNo: rollno,
       },
     };
 
     axios
-      .patch("/api/v1/auth/updateprofile", data, { headers })
+      .put("/api/v1/students", data, { headers })
       .then((response) => {
         if (response.status === 200) {
           Notify("success", "Profile updated successfully");

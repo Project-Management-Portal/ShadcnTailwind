@@ -43,7 +43,7 @@ function StudentProfile() {
   const [department, setDepartment] = useState("");
   const [classId, setClassId] = useState("");
   const [rollno, setRollno] = useState("");
-  
+
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -89,24 +89,25 @@ function StudentProfile() {
 
     const headers = {
       "Content-Type": "application/json",
-      auth_token: localStorage.getItem("auth_token"),
+      auth_token: localStorage.getItem("auth_token") || "",
     };
 
     const data = {
-      firstname: firstName,
-      lastname: lastName,
-      regid: regid,
+      firstName: firstName,
+      lastName: lastName,
+      regId: regid,
       contact: contact,
       dept: department,
       details: {
         class: classId,
-        rollno: rollno,
+        rollNo: rollno,
       },
     };
 
     setIsLoading(true);
+
     axios
-      .post("/api/v1/auth/createprofile", data, { headers })
+      .post("/api/v1/students", data, { headers })
       .then((response) => {
         if (response.status === 201) {
           localStorage.setItem("isProfileCreated", JSON.stringify(true));

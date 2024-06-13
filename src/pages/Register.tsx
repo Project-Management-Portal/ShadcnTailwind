@@ -75,7 +75,7 @@ function Register() {
     console.log(data);
     setIsLoading(true);
     axios
-      .post("/api/v1/auth/register", data)
+      .post("/api/v1/users/register", data)
       .then((response) => {
         console.log(response);
         if (response.status === 201) {

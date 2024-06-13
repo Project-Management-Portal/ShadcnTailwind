@@ -62,9 +62,10 @@ function CreateNotice() {
     files.forEach((file) => formData.append("files", file));
     setIsLoading(true);
     axios
-      .post("/api/v1/updates/createnotice", formData, {
+      .post("/api/v1/notices", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          auth_token: localStorage.getItem("auth_token") || "",
         },
       })
       .then((response) => {

@@ -33,7 +33,11 @@ function AllNotices() {
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get("/api/v1/notices")
+      .get("/api/v1/notices", {
+        headers: {
+          auth_token: localStorage.getItem("auth_token") || "",
+        },
+      })
       .then((res) => {
         console.log(res);
         if (res.status === 200) {

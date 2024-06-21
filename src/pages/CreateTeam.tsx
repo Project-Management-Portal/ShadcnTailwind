@@ -123,7 +123,7 @@ function CreateTeam() {
       auth_token: localStorage.getItem("auth_token"),
     };
     axios
-      .get("/api/v1/domains")
+      .get("/api/v1/domains", { headers })
       .then((res) => {
         const allDomains = res.data.map(
           (domain: { _id: string; name: string }) => {
@@ -140,11 +140,11 @@ function CreateTeam() {
       });
 
     axios
-      .get("/api/v1/get/allteachers")
+      .get("/api/v1/teachers/all", { headers })
       .then((res) => {
         console.log(res);
 
-        const allGuides = res.data.map(
+        const allGuides = res.data.teachers.map(
           (teacher: {
             _id: string;
             firstname: string;
@@ -170,7 +170,7 @@ function CreateTeam() {
 
     axios
       .get(
-        "/api/v1/team/getmyteaminfo",
+        "/api/v1/teams/myteam",
 
         { headers }
       )
@@ -351,7 +351,7 @@ function CreateTeam() {
     console.log(form_data);
     setButtonLoad(true);
     axios
-      .post("/api/v1/team/createteam", form_data, { headers })
+      .post("/api/v1/teams", form_data, { headers })
       .then((res) => {
         console.log(res.data);
 

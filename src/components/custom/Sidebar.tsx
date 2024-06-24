@@ -161,6 +161,14 @@ function Sidebar() {
               value="All Teams"
             />
           )}
+
+{user?.role === "Admin" && (
+            <SidebarTab
+              link="/analytics"
+              icon={<UsersRoundIcon className="h-5 w-5" />}
+              value="Analytics"
+            />
+          )}
         </div>
         <Button
           disabled={isLoading}

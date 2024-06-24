@@ -18,7 +18,7 @@ import ShowStudentProfile from "./pages/ShowStudentProfile";
 import Assessment from "./pages/Assessment";
 import ShowTeacherProfile from "./pages/ShowTeacherProfile";
 import FirstReview from "./pages/FirstReview";
-
+import Analytics from "./pages/Analytics";
 function App() {
   return (
     <>
@@ -46,6 +46,7 @@ function App() {
           <Route path="/studentprofile" element={<ShowStudentProfile />} />
           <Route path="/teacherprofile" element={<ShowTeacherProfile />} />
           <Route path="/firstreview/:id" element={<FirstReview />} />
+          <Route path="/analytics" element={<Analytics />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

@@ -4,9 +4,9 @@ import StudentReviewBarChart from '@/components/chart/review_completed';
 import GuidesAllocationPieChart from '@/components/chart/guides_allocated';
 import TitleAcceptedPieChart from '@/components/chart/project_title';
 import DomainCountBarChart from '@/components/chart/domain_count';
-import GuidesProjectsBarChart from '@/components/chart/GuidesProjectsBarChart'; // Assuming this component exists
-import ReviewAssignmentBarChart from '@/components/chart/ReviewersAllocationBarChart'; // Assuming this component exists
-import SponsorshipStatusPieChart from '@/components/chart/sponsorship_status'; // Import the new component
+import GuidesProjectsBarChart from '@/components/chart/GuidesProjectsBarChart'; 
+import ReviewAssignmentBarChart from '@/components/chart/ReviewersAllocationBarChart'; 
+import SponsorshipStatusPieChart from '@/components/chart/sponsorship_status'; 
 
 function Analytics() {
   return (

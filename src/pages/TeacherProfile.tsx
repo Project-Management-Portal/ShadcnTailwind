@@ -47,9 +47,8 @@ function TeacherProfile() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    
     axios
-      .get("/api/v1/domain/getAllDomains")
+      .get("/api/v1/domains")
       .then((res) => {
         const allDomains = res.data.map(
           (domain: { _id: string; name: string }) => {
@@ -110,16 +109,17 @@ function TeacherProfile() {
 
     const data = {
       salutation: salutation,
-      firstname: firstName,
-      lastname: lastName,
-      regid: regid,
+      firstName: firstName,
+      lastName: lastName,
+      regId: regid,
       contact: contact,
-      dept: department,
+      department: department,
       domains: selectedDomains.map((domain: { value: string }) => domain.value),
     };
     console.log(data);
 
     setIsLoading(true);
+
     axios
       .post("/api/v1/auth/createprofile", data, { headers })
       .then((response) => {

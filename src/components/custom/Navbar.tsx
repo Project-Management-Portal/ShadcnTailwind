@@ -31,7 +31,7 @@ function Navbar() {
     setIsLoading(true);
     axios
       .post(
-        "/api/v1/auth/logout",
+        "/api/v1/users/logout",
         {},
         {
           headers: {

@@ -56,20 +56,19 @@ function ShowTeacherProfile() {
     };
 
     axios
-      .get("/api/v1/auth/profile", { headers })
+      .get("/api/v1/teachers", { headers })
       .then((response) => {
-        // console.log(response.data.teacher);
-
         if (response.status === 200) {
           const salutation = response.data?.teacher.salutation;
-          const firstName = response.data?.teacher.firstname;
-          const lastName = response.data?.teacher.lastname;
-          const regid = response.data?.teacher.regid;
+          const firstName = response.data?.teacher.firstName;
+          const lastName = response.data?.teacher.lastName;
+          const regid = response.data?.teacher.regId;
           const contact = response.data?.teacher.contact;
-          const department = response.data?.teacher.dept;
+          const department = response.data?.teacher.department;
           const domains = response.data?.teacher.domains.map(
             (domain: { _id: string; name: string }) => {
               return {
+                key: domain._id,
                 value: domain._id,
                 label: domain.name,
               };
@@ -98,6 +97,7 @@ function ShowTeacherProfile() {
         const allDomains = res.data.map(
           (domain: { _id: string; name: string }) => {
             return {
+              key: domain._id,
               value: domain._id,
               label: domain.name,
             };
@@ -164,7 +164,7 @@ function ShowTeacherProfile() {
     console.log(data);
 
     axios
-      .patch("/api/v1/auth/updateprofile", data, { headers })
+      .patch("/api/v1/teachers", data, { headers })
       .then((response) => {
         if (response.status === 200) {
           Notify("success", "Profile updated successfully");

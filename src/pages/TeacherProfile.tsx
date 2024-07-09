@@ -121,7 +121,7 @@ function TeacherProfile() {
     setIsLoading(true);
 
     axios
-      .post("/api/v1/auth/createprofile", data, { headers })
+      .post("/api/v1/teachers", data, { headers })
       .then((response) => {
         if (response.status === 201) {
           localStorage.setItem("isProfileCreated", JSON.stringify(true));

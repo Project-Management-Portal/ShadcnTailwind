@@ -147,8 +147,8 @@ function CreateTeam() {
         const allGuides = res.data.teachers.map(
           (teacher: {
             _id: string;
-            firstname: string;
-            lastname: string;
+            firstName: string;
+            lastName: string;
             salutation: string;
           }) => {
             return {
@@ -156,9 +156,9 @@ function CreateTeam() {
               label:
                 teacher.salutation +
                 " " +
-                teacher.firstname +
+                teacher.firstName +
                 " " +
-                teacher.lastname,
+                teacher.lastName,
             };
           }
         );

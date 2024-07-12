@@ -53,9 +53,9 @@ function Login() {
           if (response.data.user.isProfileCreated) {
             navigate("/allnotices");
           } else {
-            if (response.data.user.role === "Students") {
+            if (response.data.user.role === "Student") {
               navigate("/createstudentprofile");
-            } else {
+            } else if (response.data.user.role === "Teacher") {
               navigate("/createteacherprofile");
             }
           }

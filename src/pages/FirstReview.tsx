@@ -23,13 +23,6 @@ type questionType = {
   answer?: string;
 };
 
-type reqQuestionType = {
-  id: string;
-  statement: string;
-  number: string;
-  answer: string;
-};
-
 type questionNumericType = {
   id: string;
   statement: string;
@@ -99,7 +92,6 @@ function FirstReview() {
   const [isFirstSubmitted, setIsFirstSubmitted] = useState(false);
   const [isSecondSubmitted, setIsSecondSubmitted] = useState(false);
   const [studentScores, setStudentScores] = useState<studentTotalScore[]>([]);
-  const [markOne, setMarkOne] = useState<reqQuestionType[]>([]);
 
   useEffect(() => {
     const headers = {
@@ -360,6 +352,8 @@ function FirstReview() {
       .catch((err) => {
         console.log(err);
       });
+
+    // eslint-disable-next-line
   }, []);
 
   const handleSubmitObjective = () => {

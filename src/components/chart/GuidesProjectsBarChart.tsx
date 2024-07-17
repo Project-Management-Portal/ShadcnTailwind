@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   BarChart,
   Bar,
@@ -7,14 +6,14 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-} from 'recharts';
+} from "recharts";
 
 const data = [
-  { guide: 'Guide A', projects: 5 },
-  { guide: 'Guide B', projects: 8 },
-  { guide: 'Guide C', projects: 3 },
-  { guide: 'Guide D', projects: 7 },
-  { guide: 'Guide E', projects: 6 },
+  { guide: "Guide A", projects: 5 },
+  { guide: "Guide B", projects: 8 },
+  { guide: "Guide C", projects: 3 },
+  { guide: "Guide D", projects: 7 },
+  { guide: "Guide E", projects: 6 },
 ];
 
 function GuidesProjectsBarChart() {

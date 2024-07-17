@@ -1,18 +1,11 @@
-import React from 'react';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-} from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 
 const data = [
-  { name: 'Registered', value: 350 },
-  { name: 'Not Registered', value: 150 },
+  { name: "Registered", value: 350 },
+  { name: "Not Registered", value: 150 },
 ];
 
-const COLORS = ['#0088FE', '#FFBB28']; // Colors for pie chart segments
+const COLORS = ["#0088FE", "#FFBB28"]; // Colors for pie chart segments
 
 function StudentRegistrationPieChart() {
   return (
@@ -27,15 +20,18 @@ function StudentRegistrationPieChart() {
           fill="#8884d8"
           label
         >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          {data.map((item, index) => (
+            <Cell
+              key={`cell-${index}-${item.name}`}
+              fill={COLORS[index % COLORS.length]}
+            />
           ))}
         </Pie>
         <Tooltip />
         <Legend />
       </PieChart>
     </div>
-  )
+  );
 }
 
 export default StudentRegistrationPieChart;

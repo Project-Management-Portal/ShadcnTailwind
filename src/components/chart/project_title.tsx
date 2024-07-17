@@ -1,18 +1,11 @@
-import React from 'react';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-} from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 
 const data = [
-  { name: 'Accepted', value: 25 },
-  { name: 'NotAccepted', value: 15 },
+  { name: "Accepted", value: 25 },
+  { name: "NotAccepted", value: 15 },
 ];
 
-const COLORS = ['#0088FE', '#FFBB28']; // Colors for pie chart segments
+const COLORS = ["#0088FE", "#FFBB28"]; // Colors for pie chart segments
 
 function TitleAcceptedPieChart() {
   return (
@@ -36,6 +29,6 @@ function TitleAcceptedPieChart() {
       </PieChart>
     </div>
   );
-};
+}
 
 export default TitleAcceptedPieChart;

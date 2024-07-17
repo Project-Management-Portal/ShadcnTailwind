@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   BarChart,
   Bar,
@@ -7,14 +6,14 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-} from 'recharts';
+} from "recharts";
 
 const data = [
-  { domain: 'Math', count: 30 },
-  { domain: 'Science', count: 45 },
-  { domain: 'History', count: 60 },
-  { domain: 'Literature', count: 55 },
-  { domain: 'Art', count: 70 },
+  { domain: "Math", count: 30 },
+  { domain: "Science", count: 45 },
+  { domain: "History", count: 60 },
+  { domain: "Literature", count: 55 },
+  { domain: "Art", count: 70 },
 ];
 
 function DomainCountBarChart() {

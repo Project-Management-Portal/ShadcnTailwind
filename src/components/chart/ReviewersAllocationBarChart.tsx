@@ -1,11 +1,18 @@
-import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 const data = [
-  { name: 'Reviewer 1', allocated: 15, unallocated: 5 },
-  { name: 'Reviewer 2', allocated: 10, unallocated: 10 },
-  { name: 'Reviewer 3', allocated: 20, unallocated: 0 },
-  { name: 'Reviewer 4', allocated: 18, unallocated: 2 },
+  { name: "Reviewer 1", allocated: 15, unallocated: 5 },
+  { name: "Reviewer 2", allocated: 10, unallocated: 10 },
+  { name: "Reviewer 3", allocated: 20, unallocated: 0 },
+  { name: "Reviewer 4", allocated: 18, unallocated: 2 },
 ];
 
 function ReviewersAllocationBarChart() {

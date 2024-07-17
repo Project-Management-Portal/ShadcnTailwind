@@ -12,8 +12,7 @@ import {
 import Notify from "@/helpers/Notify";
 import axios from "axios";
 import { MouseEvent, useEffect, useState } from "react";
-import { CheckIcon, Loader2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { CheckIcon } from "lucide-react";
 import DropdownComponent from "@/components/custom/DropdownComponent";
 
 const departmentOptions = [
@@ -43,8 +42,6 @@ function ShowTeacherProfile() {
   const [department, setDepartment] = useState("");
   const [domains, setDomains] = useState([]);
   const [selectedDomains, setSelectedDomains] = useState<Option[]>([]);
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
   const [resDomains, setResDomains] = useState([]);

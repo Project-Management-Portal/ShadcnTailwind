@@ -58,6 +58,8 @@ function ShowStudentProfile() {
     rollno: "",
   });
 
+  console.log(user);
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [regid, setRegId] = useState("");

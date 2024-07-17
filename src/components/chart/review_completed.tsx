@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   BarChart,
   Bar,
@@ -7,14 +6,14 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-} from 'recharts';
+} from "recharts";
 
 const data = [
-  { name: 'Week 1', completed: 30 },
-  { name: 'Week 2', completed: 45 },
-  { name: 'Week 3', completed: 60 },
-  { name: 'Week 4', completed: 55 },
-  { name: 'Week 5', completed: 70 },
+  { name: "Week 1", completed: 30 },
+  { name: "Week 2", completed: 45 },
+  { name: "Week 3", completed: 60 },
+  { name: "Week 4", completed: 55 },
+  { name: "Week 5", completed: 70 },
 ];
 
 function StudentReviewBarChart() {
@@ -34,7 +33,7 @@ function StudentReviewBarChart() {
         <Bar dataKey="completed" fill="#8884d8" />
       </BarChart>
     </div>
-  )
+  );
 }
 
 export default StudentReviewBarChart;

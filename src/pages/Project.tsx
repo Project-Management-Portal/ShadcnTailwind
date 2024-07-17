@@ -30,6 +30,9 @@ function Project() {
     title: "",
     description: "",
   });
+
+  console.log(projectDetails);
+
   const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
